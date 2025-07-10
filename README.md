@@ -308,38 +308,6 @@ class Container {
 }
 ```
 
-## 🧪 Exercícios Práticos
-
-### Exercício 1: Implementar Camada de Produtos
-```bash
-# Criar toda estrutura para gestão de produtos
-npm run exercise:products
-```
-
-### Exercício 2: Sistema de Autenticação MVC
-```bash
-# Implementar auth completo seguindo MVC
-npm run exercise:auth
-```
-
-### Exercício 3: Carrinho com Repository Pattern
-```bash
-# Criar carrinho usando Repository Pattern
-npm run exercise:cart
-```
-
-### Exercício 4: Gateway de Pagamento Hexagonal
-```bash
-# Implementar pagamento com Ports & Adapters
-npm run exercise:payment
-```
-
-### Exercício 5: Testes com Dependency Injection
-```bash
-# Criar testes usando DI e mocks
-npm run exercise:tests
-```
-
 ## 📊 Endpoints da API
 
 | Método | Endpoint | Descrição | Padrão Aplicado |
@@ -432,17 +400,6 @@ Após completar este tutorial, marque os itens que você domina:
 - [ ] **Zod Validation**: Validação de schemas
 - [ ] **Jest Testing**: Framework de testes
 - [ ] **Docker Multi-stage**: Builds otimizadas
-
-## 🔄 Comparação com Tutorial 1
-
-| Aspecto | Tutorial 1 (Fundamentos) | Tutorial 2 (Padrões) |
-|---------|---------------------------|----------------------|
-| **Foco** | Conceitos básicos | Padrões avançados |
-| **Linguagem** | JavaScript | TypeScript |
-| **Arquitetura** | Containers separados | Camadas organizadas |
-| **Testes** | Health checks | Testes unitários completos |
-| **Complexidade** | Sistema simples | E-commerce completo |
-| **Padrões** | Separação básica | 5+ padrões implementados |
 
 ## 🚀 Próximos Passos
 

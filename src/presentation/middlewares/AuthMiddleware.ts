@@ -227,4 +227,15 @@ export class AuthMiddleware {
 
   // Extract token from Authorization header
   private static extractTokenFromHeader(authHeader: string): string | null {
-    // Expected format: "Bearer
+    // Expected format: "Bearer <token>"
+    const parts = authHeader.split(' ');
+    
+    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+      return null;
+    }
+    
+    return parts[1];
+  }
+}
+
+// Completar o arquivo AuthMiddleware.ts existente que estava incompleto

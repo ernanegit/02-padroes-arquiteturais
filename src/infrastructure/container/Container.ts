@@ -5,20 +5,26 @@ import { Logger } from '@/shared/utils/Logger';
 // Interfaces (Ports)
 import { IUserRepository } from '@/business/interfaces/IUserRepository';
 import { IProductRepository } from '@/business/interfaces/IProductRepository';
+import { IOrderRepository } from '@/business/interfaces/IOrderRepository';
 
 // Repository implementations (Adapters)
 import { UserRepository } from '@/data/repositories/UserRepository';
 import { ProductRepository } from '@/data/repositories/ProductRepository';
+import { OrderRepository } from '@/data/repositories/OrderRepository';
 
 // Services
 import { UserService } from '@/business/services/UserService';
 import { ProductService } from '@/business/services/ProductService';
 import { AuthService } from '@/business/services/AuthService';
+import { CartService } from '@/business/services/CartService';
+import { OrderService } from '@/business/services/OrderService';
 
 // Controllers
 import { UserController } from '@/presentation/controllers/UserController';
 import { ProductController } from '@/presentation/controllers/ProductController';
 import { AuthController } from '@/presentation/controllers/AuthController';
+import { CartController } from '@/presentation/controllers/CartController';
+import { OrderController } from '@/presentation/controllers/OrderController';
 
 type ServiceFactory<T> = () => T;
 type ServiceInstance<T> = T;
@@ -44,6 +50,10 @@ export class Container {
       new ProductRepository(this.resolve('DatabaseConnection'))
     );
 
+    this.registerSingleton<IOrderRepository>('OrderRepository', () => 
+      new OrderRepository(this.resolve('DatabaseConnection'))
+    );
+
     // Register services (Business Layer)
     this.registerSingleton('UserService', () => 
       new UserService(
@@ -66,6 +76,23 @@ export class Container {
       )
     );
 
+    this.registerSingleton('CartService', () => 
+      new CartService(
+        this.resolve<IProductRepository>('ProductRepository'),
+        this.resolve<IUserRepository>('UserRepository'),
+        this.resolve('RedisConnection')
+      )
+    );
+
+    this.registerSingleton('OrderService', () => 
+      new OrderService(
+        this.resolve<IOrderRepository>('OrderRepository'),
+        this.resolve<IProductRepository>('ProductRepository'),
+        this.resolve<IUserRepository>('UserRepository'),
+        this.resolve('RedisConnection')
+      )
+    );
+
     // Register controllers (Presentation Layer)
     this.registerTransient('UserController', () => 
       new UserController(this.resolve('UserService'))
@@ -77,6 +104,14 @@ export class Container {
 
     this.registerTransient('AuthController', () => 
       new AuthController(this.resolve('AuthService'))
+    );
+
+    this.registerTransient('CartController', () => 
+      new CartController(this.resolve('CartService'))
+    );
+
+    this.registerTransient('OrderController', () => 
+      new OrderController(this.resolve('OrderService'))
     );
 
     this.logger.info('Dependency injection container initialized successfully');

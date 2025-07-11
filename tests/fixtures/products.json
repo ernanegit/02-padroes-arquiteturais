@@ -1,0 +1,26 @@
+[
+  {
+    "id": "prod_001",
+    "name": "Notebook Gamer RTX",
+    "description": "Notebook para jogos com placa RTX 4060",
+    "price": 2999.99,
+    "sku": "NBG-RTX-001",
+    "stock": 50,
+    "categoryId": "cat_electronics",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "prod_002",
+    "name": "Mouse Gamer RGB",
+    "description": "Mouse óptico com iluminação RGB",
+    "price": 199.99,
+    "sku": "MOU-RGB-002",
+    "stock": 100,
+    "categoryId": "cat_peripherals",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+]

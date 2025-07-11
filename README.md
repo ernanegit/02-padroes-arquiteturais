@@ -2,7 +2,7 @@
 
 > **📚 [← Voltar ao Índice Principal](https://github.com/ernanegit/00-arquitetura-software-index)** | **[← Tutorial Anterior: Fundamentos](https://github.com/ernanegit/01-fundamentos-arquitetura-software)** | **[Próximo Tutorial: Microsserviços →](https://github.com/ernanegit/03-microservicos-pratica)**
 
-Sistema de e-commerce desenvolvido para demonstrar na prática os principais **padrões arquiteturais** usando TypeScript, Clean Architecture e Design Patterns.
+Sistema de e-commerce **100% funcional** desenvolvido para demonstrar na prática os principais **padrões arquiteturais** usando TypeScript, Clean Architecture e Design Patterns.
 
 ## 🎯 Objetivos de Aprendizado
 
@@ -14,17 +14,17 @@ Ao completar este tutorial, você será capaz de:
 - ✅ **Usar Repository Pattern** para abstração de dados
 - ✅ **Implementar Dependency Injection** para baixo acoplamento
 - ✅ **Aplicar Domain-Driven Design** básico
-- ✅ **Criar testes unitários** com alta cobertura
+- ✅ **Configurar ambiente de desenvolvimento** eficiente
 
 ## 🏗️ O que vamos construir
 
 Um **sistema de e-commerce completo** aplicando diferentes padrões arquiteturais:
 
-- 🛒 **Gestão de Produtos** (CRUD com validações)
-- 👤 **Gestão de Usuários** (Autenticação e autorização)
-- 🛍️ **Carrinho de Compras** (Sessões e estado)
+- 🛒 **Gestão de Produtos** (CRUD com validações Zod)
+- 👤 **Gestão de Usuários** (Autenticação JWT e autorização)
+- 🛍️ **Carrinho de Compras** (Cache Redis e estado)
 - 📦 **Processamento de Pedidos** (Workflow complexo)
-- 💳 **Gateway de Pagamento** (Integração externa)
+- 🔐 **Sistema de Autenticação** (JWT + Refresh tokens)
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -73,13 +73,13 @@ Um **sistema de e-commerce completo** aplicando diferentes padrões arquiteturai
 | **ORM** | Prisma | 5.x | Mapeamento objeto-relacional |
 | **Database** | PostgreSQL | 15 | Persistência principal |
 | **Cache** | Redis | 7 | Cache e sessões |
-| **Tests** | Jest + Supertest | Latest | Testes unitários e integração |
-| **Validation** | Zod | Latest | Validação de dados |
+| **Validation** | Zod | Latest | Validação de schemas |
+| **Auth** | JWT + bcrypt | Latest | Autenticação segura |
 | **Container** | Docker + Compose | Latest | Containerização |
 
 ## 🚀 Como Executar
 
-### Instalação Rápida
+### 🔥 **Setup Automático (Recomendado)**
 
 ```bash
 # 1. Clone o repositório
@@ -89,136 +89,90 @@ cd 02-padroes-arquiteturais
 # 2. Instale dependências
 npm install
 
-# 3. Configure ambiente
-cp .env.example .env
-
-# 4. Inicie containers
-docker-compose up -d
-
-# 5. Execute migrations
-npm run db:migrate
-
-# 6. Seed do banco
-npm run db:seed
-
-# 7. Inicie desenvolvimento
-npm run dev
+# 3. Configure ambiente (cria .env automaticamente)
+npm run dev:setup
 ```
 
-### Acessar Aplicações
+### ⚡ **Setup Manual**
 
-- **🌐 API:** http://localhost:8000
-- **📊 API Docs:** http://localhost:8000/docs
-- **💓 Health Check:** http://localhost:8000/health
+```bash
+# 1. Clone e instale
+git clone https://github.com/ernanegit/02-padroes-arquiteturais.git
+cd 02-padroes-arquiteturais
+npm install
+
+# 2. Configure ambiente
+cp .env.example .env
+
+# 3. Inicie dependências (PostgreSQL + Redis)
+npm run docker:deps
+
+# 4. Aguarde 10 segundos para containers iniciarem
+# ...
+
+# 5. Execute migrations e seed
+npm run db:migrate
+npm run db:seed
+
+# 6. Inicie desenvolvimento (porta 3001)
+npm run dev:local
+```
+
+### 🎯 **Acessar Aplicação**
+
+- **🌐 API Desenvolvimento:** http://localhost:3001
+- **📊 API Docs:** http://localhost:3001/docs
+- **💓 Health Check:** http://localhost:3001/health
 - **🗄️ Database:** localhost:5432
 - **💾 Redis:** localhost:6379
 
-## 📚 Conteúdo do Tutorial
-
-### Parte 1: 🏗️ Arquitetura em Camadas
-- **Presentation Layer**: Controllers, Routes, DTOs
-- **Business Layer**: Services, Use Cases, Domain
-- **Data Layer**: Repositories, Models, Database
-- **Exercício**: Implementar CRUD de produtos
-
-### Parte 2: 🎭 MVC Pattern
-- **Model**: Entidades e regras de negócio
-- **View**: Serialização de dados (JSON responses)
-- **Controller**: Orquestração de requests
-- **Exercício**: Sistema de autenticação
-
-### Parte 3: 🔷 Arquitetura Hexagonal
-- **Domain**: Lógica de negócio pura
-- **Ports**: Interfaces (abstrações)
-- **Adapters**: Implementações concretas
-- **Exercício**: Processamento de pedidos
-
-### Parte 4: 📦 Repository Pattern
-- **Interface Repository**: Contrato de dados
-- **Implementação Concreta**: Prisma Repository
-- **Mock Repository**: Para testes
-- **Exercício**: Sistema de carrinho
-
-### Parte 5: 🏭 Dependency Injection
-- **Container IoC**: Gerenciamento de dependências
-- **Service Locator**: Registro de serviços
-- **Constructor Injection**: Injeção via construtor
-- **Exercício**: Gateway de pagamento
-
-### Parte 6: 🧪 Testes e Qualidade
-- **Testes Unitários**: Lógica de negócio
-- **Testes de Integração**: APIs completas
-- **Mocks e Stubs**: Isolamento de dependências
-- **Coverage**: Cobertura de código
-
-## 📁 Estrutura Detalhada do Projeto
+### 🔑 **Credenciais de Teste**
 
 ```
-02-padroes-arquiteturais/
-├── 📄 docker-compose.yml          # Orquestração containers
-├── 📄 package.json               # Dependências e scripts
-├── 📄 tsconfig.json              # Configuração TypeScript
-├── 📄 jest.config.js             # Configuração testes
-├── 📄 .env.example               # Variáveis de ambiente
-├── 📄 README.md                  # Este arquivo
-│
-├── 📁 src/                       # 💻 Código fonte
-│   ├── 📁 presentation/          # 🎨 Camada de apresentação
-│   │   ├── 📁 controllers/       # Controllers REST
-│   │   ├── 📁 middlewares/       # Middlewares Express
-│   │   ├── 📁 routes/            # Definição de rotas
-│   │   └── 📁 dtos/              # Data Transfer Objects
-│   │
-│   ├── 📁 business/              # ⚙️ Camada de negócio
-│   │   ├── 📁 services/          # Serviços de aplicação
-│   │   ├── 📁 usecases/          # Casos de uso
-│   │   ├── 📁 domain/            # Entidades de domínio
-│   │   └── 📁 interfaces/        # Contratos (ports)
-│   │
-│   ├── 📁 data/                  # 🗄️ Camada de dados
-│   │   ├── 📁 repositories/      # Implementações Repository
-│   │   ├── 📁 models/            # Models Prisma
-│   │   ├── 📁 migrations/        # Migrations database
-│   │   └── 📁 seeders/           # Seeds de dados
-│   │
-│   ├── 📁 infrastructure/        # 🔧 Infraestrutura
-│   │   ├── 📁 database/          # Configuração banco
-│   │   ├── 📁 cache/             # Configuração Redis
-│   │   ├── 📁 container/         # IoC Container
-│   │   └── 📁 external/          # APIs externas
-│   │
-│   ├── 📁 shared/                # 🤝 Código compartilhado
-│   │   ├── 📁 utils/             # Utilitários
-│   │   ├── 📁 constants/         # Constantes
-│   │   ├── 📁 errors/            # Classes de erro
-│   │   └── 📁 validators/        # Validadores Zod
-│   │
-│   └── 📄 app.ts                 # Entry point aplicação
-│
-├── 📁 tests/                     # 🧪 Testes
-│   ├── 📁 unit/                  # Testes unitários
-│   ├── 📁 integration/           # Testes integração
-│   ├── 📁 mocks/                 # Mocks e stubs
-│   └── 📁 fixtures/              # Dados de teste
-│
-├── 📁 docs/                      # 📚 Documentação
-│   ├── 📄 architecture.md        # Decisões arquiteturais
-│   ├── 📄 patterns.md            # Padrões implementados
-│   └── 📄 api.md                 # Documentação API
-│
-└── 📁 scripts/                   # 🚀 Scripts automação
-    ├── 📄 start.sh              # Iniciar desenvolvimento
-    ├── 📄 test.sh               # Executar testes
-    └── 📄 deploy.sh             # Deploy aplicação
+Admin: admin@ecommerce.com / password123
+Customer: customer@example.com / password123
+```
+
+## 📚 Scripts Disponíveis
+
+### 🔧 **Desenvolvimento**
+```bash
+npm run dev:setup      # Setup completo automático
+npm run dev:local      # Aplicação local (porta 3001)
+npm run docker:deps    # Apenas PostgreSQL + Redis
+```
+
+### 🚀 **Produção**
+```bash
+npm run prod:up        # Aplicação completa Docker (porta 8000)
+npm run prod:down      # Parar produção
+npm run prod:logs      # Ver logs produção
+```
+
+### 🗄️ **Database**
+```bash
+npm run db:migrate     # Executar migrations
+npm run db:seed        # Popular com dados de teste
+npm run db:reset       # Reset completo
+npm run db:studio      # Interface visual Prisma
+```
+
+### 🧪 **Testes e Qualidade**
+```bash
+npm run test           # Executar testes
+npm run test:coverage  # Cobertura de código
+npm run lint           # Verificar código
+npm run type-check     # Verificar tipos TypeScript
 ```
 
 ## 🏛️ Padrões Arquiteturais Implementados
 
-### 1. 🏗️ Arquitetura em Camadas (Layered)
+### 1. 🏗️ **Arquitetura em Camadas (Layered)**
 
-**Implementação:**
+Separação clara de responsabilidades em camadas bem definidas:
+
 ```typescript
-// Presentation Layer
+// 🎨 PRESENTATION LAYER
 class ProductController {
   constructor(private productService: ProductService) {}
   
@@ -229,7 +183,7 @@ class ProductController {
   }
 }
 
-// Business Layer  
+// ⚙️ BUSINESS LAYER  
 class ProductService {
   constructor(private repository: ProductRepository) {}
   
@@ -239,7 +193,7 @@ class ProductService {
   }
 }
 
-// Data Layer
+// 🗄️ DATA LAYER
 class PrismaProductRepository implements ProductRepository {
   async save(product: Product): Promise<Product> {
     return this.prisma.product.create({ data: product });
@@ -247,23 +201,24 @@ class PrismaProductRepository implements ProductRepository {
 }
 ```
 
-### 2. 🎭 MVC Pattern
+### 2. 🎭 **MVC Pattern**
 
-**Estrutura implementada:**
+Estrutura Model-View-Controller implementada:
 - **Model**: Entidades de domínio com regras de negócio
-- **View**: Serialização JSON com DTOs  
-- **Controller**: Orquestração HTTP requests
+- **View**: Serialização JSON com DTOs validados  
+- **Controller**: Orquestração de HTTP requests
 
-### 3. 🔷 Arquitetura Hexagonal
+### 3. 🔷 **Arquitetura Hexagonal (Ports & Adapters)**
 
-**Ports & Adapters:**
+Isolamento do domínio através de interfaces:
+
 ```typescript
-// Port (Interface)
+// 🔌 PORT (Interface)
 interface PaymentGateway {
   processPayment(data: PaymentData): Promise<PaymentResult>;
 }
 
-// Adapter (Implementação)
+// 🔧 ADAPTER (Implementação)
 class StripeAdapter implements PaymentGateway {
   async processPayment(data: PaymentData): Promise<PaymentResult> {
     // Implementação específica Stripe
@@ -271,9 +226,10 @@ class StripeAdapter implements PaymentGateway {
 }
 ```
 
-### 4. 📦 Repository Pattern
+### 4. 📦 **Repository Pattern**
 
-**Abstração de dados:**
+Abstração completa de acesso a dados:
+
 ```typescript
 interface UserRepository {
   findById(id: string): Promise<User | null>;
@@ -281,23 +237,26 @@ interface UserRepository {
   delete(id: string): Promise<void>;
 }
 
+// Implementação real
 class PrismaUserRepository implements UserRepository {
   // Implementação com Prisma
 }
 
+// Implementação para testes
 class InMemoryUserRepository implements UserRepository {
-  // Implementação para testes
+  // Implementação em memória
 }
 ```
 
-### 5. 🏭 Dependency Injection
+### 5. 🏭 **Dependency Injection**
 
-**Container IoC:**
+Container IoC completo para gerenciamento de dependências:
+
 ```typescript
 class Container {
   private services = new Map();
   
-  register<T>(token: string, factory: () => T): void {
+  registerSingleton<T>(token: string, factory: () => T): void {
     this.services.set(token, factory);
   }
   
@@ -312,103 +271,174 @@ class Container {
 
 | Método | Endpoint | Descrição | Padrão Aplicado |
 |--------|----------|-----------|-----------------|
-| `GET` | `/health` | Health check | - |
-| `POST` | `/auth/login` | Login usuário | MVC |
-| `GET` | `/products` | Listar produtos | Layered |
-| `POST` | `/products` | Criar produto | Repository |
-| `GET` | `/cart` | Ver carrinho | Hexagonal |
-| `POST` | `/orders` | Criar pedido | DI + Use Cases |
-| `POST` | `/payments` | Processar pagamento | Adapter Pattern |
+| `GET` | `/health` | Health check | Monitoring |
+| `GET` | `/docs` | Documentação | - |
+| `POST` | `/api/v1/auth/login` | Login usuário | MVC + JWT |
+| `GET` | `/api/v1/products` | Listar produtos | Layered + Repository |
+| `POST` | `/api/v1/products` | Criar produto | DI + Validation |
+| `GET` | `/api/v1/cart` | Ver carrinho | Hexagonal + Cache |
+| `POST` | `/api/v1/orders` | Criar pedido | Clean Architecture |
+| `GET` | `/api/v1/users` | Listar usuários | Authorization |
 
-### Exemplos de Uso
+### 🧪 **Exemplos de Teste**
 
 ```bash
-# Autenticação
-curl -X POST http://localhost:8000/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "123456"}'
+# Health Check
+curl http://localhost:3001/health
 
-# Criar produto
-curl -X POST http://localhost:8000/products \
-  -H "Authorization: Bearer $TOKEN" \
+# Login
+curl -X POST http://localhost:3001/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "admin@ecommerce.com", "password": "password123"}'
+
+# Listar produtos
+curl http://localhost:3001/api/v1/products
+
+# Criar usuário
+curl -X POST http://localhost:3001/api/v1/users \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Notebook Gamer",
-    "price": 2999.99,
-    "category": "electronics"
+    "email": "test@example.com",
+    "password": "Password123",
+    "firstName": "Test",
+    "lastName": "User"
   }'
-
-# Adicionar ao carrinho
-curl -X POST http://localhost:8000/cart/items \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"productId": "123", "quantity": 1}'
 ```
 
-## 🔍 Comandos Úteis
+## 📁 Estrutura do Projeto
 
-```bash
-# Desenvolvimento
-npm run dev              # Modo desenvolvimento com hot reload
-npm run build            # Build para produção
-npm run start            # Iniciar produção
-
-# Banco de dados
-npm run db:migrate       # Executar migrations
-npm run db:seed          # Popular com dados iniciais
-npm run db:reset         # Reset completo
-npm run db:studio        # Abrir Prisma Studio
-
-# Testes
-npm run test             # Executar todos os testes
-npm run test:unit        # Apenas testes unitários
-npm run test:integration # Apenas testes integração
-npm run test:coverage    # Cobertura de código
-
-# Qualidade
-npm run lint             # Verificar código
-npm run lint:fix         # Corrigir automaticamente
-npm run type-check       # Verificar tipos TypeScript
-
-# Docker
-npm run docker:up        # Subir containers
-npm run docker:down      # Parar containers
-npm run docker:logs      # Ver logs
+```
+02-padroes-arquiteturais/
+├── 📁 src/                       # 💻 Código fonte
+│   ├── 📁 presentation/          # 🎨 Camada de apresentação
+│   │   ├── 📁 controllers/       # Controllers REST
+│   │   ├── 📁 middlewares/       # Auth, Validation, Error handling
+│   │   ├── 📁 routes/            # Definição de rotas
+│   │   └── 📁 dtos/              # Data Transfer Objects (Zod)
+│   │
+│   ├── 📁 business/              # ⚙️ Camada de negócio
+│   │   ├── 📁 services/          # Serviços de aplicação
+│   │   ├── 📁 domain/            # Entidades de domínio
+│   │   └── 📁 interfaces/        # Contratos (ports)
+│   │
+│   ├── 📁 data/                  # 🗄️ Camada de dados
+│   │   ├── 📁 repositories/      # Repository implementations
+│   │   └── 📁 seeders/           # Database seeders
+│   │
+│   ├── 📁 infrastructure/        # 🔧 Infraestrutura
+│   │   ├── 📁 database/          # Configuração Prisma
+│   │   ├── 📁 cache/             # Configuração Redis
+│   │   └── 📁 container/         # IoC Container
+│   │
+│   ├── 📁 shared/                # 🤝 Código compartilhado
+│   │   ├── 📁 utils/             # Utilitários
+│   │   ├── 📁 errors/            # Classes de erro
+│   │   └── 📁 validators/        # Validadores Zod
+│   │
+│   └── 📄 app.ts                 # Entry point aplicação
+│
+├── 📁 prisma/                    # 🗃️ Database
+│   └── schema.prisma             # Schema do banco
+│
+├── 📁 tests/                     # 🧪 Testes
+│   ├── 📁 fixtures/              # Dados de teste
+│   ├── 📁 unit/                  # Testes unitários
+│   └── 📁 integration/           # Testes integração
+│
+├── 📁 scripts/                   # 🚀 Scripts automação
+│   └── dev.ps1                   # Script desenvolvimento Windows
+│
+├── 📄 docker-compose.yml         # 🐳 Orquestração containers
+├── 📄 docker-compose.dev.yml     # 🔧 Containers desenvolvimento
+├── 📄 package.json              # Dependências e scripts
+└── 📄 .env.example              # Variáveis de ambiente
 ```
 
-## 🎯 Checkpoint: O que você aprendeu
+## 🎯 Funcionalidades Implementadas
 
-Após completar este tutorial, marque os itens que você domina:
+### ✅ **Sistema de Autenticação**
+- Login com JWT tokens
+- Refresh tokens automáticos
+- Hash de senhas com bcrypt
+- Middleware de autenticação/autorização
+- Diferentes níveis de acesso (Admin, Customer, Moderator)
+
+### ✅ **Gestão de Produtos**
+- CRUD completo com validações
+- Sistema de categorias
+- Controle de estoque
+- Busca e filtros
+- Ativação/desativação
+
+### ✅ **Sistema de Carrinho**
+- Sessões com Redis
+- Adição/remoção de itens
+- Cálculo automático de totais
+- Validação de estoque
+- Merge de carrinho de guest/usuário
+
+### ✅ **Processamento de Pedidos**
+- Workflow completo de pedidos
+- Estados bem definidos
+- Cálculo de impostos e frete
+- Histórico de status
+- Integração com estoque
+
+### ✅ **Infraestrutura Robusta**
+- Health checks
+- Logs estruturados
+- Error handling centralizado
+- Validação de schemas
+- Cache inteligente
+
+## 🔍 Configuração de Desenvolvimento vs Produção
+
+### 🔧 **Desenvolvimento**
+- **Porta**: 3001
+- **Database**: Docker PostgreSQL
+- **Cache**: Docker Redis  
+- **Aplicação**: Local (hot reload)
+- **Logs**: Detalhados
+
+### 🚀 **Produção**
+- **Porta**: 8000
+- **Setup**: Docker Compose completo
+- **Otimizações**: Multi-stage builds
+- **Logs**: Estruturados
+
+## 🎯 Checkpoint: O que você domina
+
+Marque os padrões que você implementou com sucesso:
 
 ### Padrões Arquiteturais
-- [ ] **Layered Architecture**: Organização em camadas bem definidas
-- [ ] **MVC Pattern**: Separação Model-View-Controller
-- [ ] **Hexagonal Architecture**: Isolamento do domínio
-- [ ] **Repository Pattern**: Abstração de acesso a dados
-- [ ] **Dependency Injection**: Inversão de controle
+- [x] **Layered Architecture**: ✅ Implementado
+- [x] **MVC Pattern**: ✅ Implementado
+- [x] **Hexagonal Architecture**: ✅ Implementado
+- [x] **Repository Pattern**: ✅ Implementado
+- [x] **Dependency Injection**: ✅ Implementado
 
 ### Conceitos Avançados
-- [ ] **Domain-Driven Design**: Modelagem focada no domínio
-- [ ] **Clean Architecture**: Arquitetura limpa e testável
-- [ ] **SOLID Principles**: Princípios de design aplicados
-- [ ] **IoC Container**: Gerenciamento de dependências
-- [ ] **Unit Testing**: Testes isolados e mocados
+- [x] **Domain-Driven Design**: ✅ Implementado
+- [x] **Clean Architecture**: ✅ Implementado
+- [x] **SOLID Principles**: ✅ Aplicados
+- [x] **IoC Container**: ✅ Funcional
+- [x] **Data Validation**: ✅ Zod schemas
 
 ### Tecnologias
-- [ ] **TypeScript**: Tipagem estática avançada
-- [ ] **Prisma ORM**: Mapeamento objeto-relacional
-- [ ] **Zod Validation**: Validação de schemas
-- [ ] **Jest Testing**: Framework de testes
-- [ ] **Docker Multi-stage**: Builds otimizadas
+- [x] **TypeScript**: ✅ Tipagem avançada
+- [x] **Prisma ORM**: ✅ Migrations e queries
+- [x] **Redis Cache**: ✅ Sessões e performance
+- [x] **JWT Auth**: ✅ Segurança implementada
+- [x] **Docker**: ✅ Containerização completa
 
 ## 🚀 Próximos Passos
 
 ### Melhorias Sugeridas
 1. **Implementar Event Sourcing**
 2. **Adicionar CQRS pattern**
-3. **Criar API GraphQL**
+3. **Criar testes unitários completos**
 4. **Implementar Circuit Breaker**
-5. **Adicionar observabilidade completa**
+5. **Adicionar observabilidade (metrics/tracing)**
 
 ### Continuar Aprendizado
 **➡️ [Próximo Tutorial: Microsserviços na Prática](https://github.com/ernanegit/03-microservicos-pratica)**
@@ -419,6 +449,33 @@ Onde você aprenderá:
 - Service Discovery
 - Distributed Tracing
 
+## 🛠️ Troubleshooting
+
+### Problemas Comuns
+
+**🔴 Erro de porta em uso:**
+```bash
+# Verificar processos na porta
+netstat -ano | findstr :3001
+# Usar script automático
+npm run dev:setup
+```
+
+**🔴 Banco não conecta:**
+```bash
+# Verificar containers
+docker-compose ps
+# Restart dependências
+npm run docker:deps
+```
+
+**🔴 Erro de dependências:**
+```bash
+# Limpar e reinstalar
+rm -rf node_modules package-lock.json
+npm install
+```
+
 ## 📚 Referências e Links Úteis
 
 - [Clean Architecture - Robert Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
@@ -426,7 +483,7 @@ Onde você aprenderá:
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Prisma Documentation](https://www.prisma.io/docs)
-- [Jest Testing Framework](https://jestjs.io/docs/getting-started)
+- [Zod Validation](https://zod.dev/)
 
 ## 🤝 Contribuições
 
@@ -449,7 +506,7 @@ Este projeto é para fins educacionais e de aprendizado.
 
 ---
 
-> **💡 Dica:** Este tutorial eleva significativamente o nível! Reserve tempo para praticar cada padrão individualmente antes de prosseguir.
+> **🎉 Sucesso Garantido:** Este tutorial foi testado e está 100% funcional! Siga os passos e você terá uma aplicação completa rodando em minutos.
 
 ---
 

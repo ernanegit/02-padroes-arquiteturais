@@ -3,18 +3,12 @@ import { AuthController } from '@/presentation/controllers/AuthController';
 import { Container } from '@/infrastructure/container/Container';
 import { ValidationMiddleware } from '@/presentation/middlewares/ValidationMiddleware';
 import { AuthMiddleware } from '@/presentation/middlewares/AuthMiddleware';
-import { LoginDTO, ChangePasswordDTO } from '@/presentation/dtos/CreateUserDTO';
-import { z } from 'zod';
-
-// Refresh Token DTO
-const RefreshTokenDTO = z.object({
-  refreshToken: z.string().min(1, 'Refresh token is required'),
-});
-
-// Verify Token DTO
-const VerifyTokenDTO = z.object({
-  token: z.string().min(1, 'Token is required'),
-});
+import { 
+  LoginDTO, 
+  RefreshTokenDTO, 
+  VerifyTokenDTO, 
+  ChangePasswordDTO 
+} from '@/presentation/dtos/LoginDTO'; // Corrigido: importar do arquivo correto
 
 export class AuthRoutes {
   public router: Router;

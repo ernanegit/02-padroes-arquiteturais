@@ -4,6 +4,18 @@ export enum UserRole {
   MODERATOR = 'MODERATOR',
 }
 
+// Interface para o usuário seguro (sem password)
+export interface SafeUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export class User {
   id: string;
   email: string;
@@ -105,9 +117,17 @@ export class User {
     return errors;
   }
 
-  // Convert to safe object (without password)
-  toSafeObject(): Omit<User, 'password'> {
-    const { password, ...safeUser } = this;
-    return safeUser;
+  // Convert to safe object (without password) - Método corrigido
+  toSafeObject(): SafeUser {
+    return {
+      id: this.id,
+      email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      role: this.role,
+      isActive: this.isActive,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
   }
 }

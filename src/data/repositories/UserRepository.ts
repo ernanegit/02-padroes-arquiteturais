@@ -146,7 +146,7 @@ export class UserRepository implements IUserRepository {
         orderBy: { createdAt: 'desc' },
       });
 
-      return users.map(user => new User({
+      return users.map((user: any) => new User({
         id: user.id,
         email: user.email,
         password: user.password,
@@ -182,6 +182,97 @@ export class UserRepository implements IUserRepository {
       return await this.prisma.user.count();
     } catch (error) {
       this.logger.error('Error counting users:', error);
+      throw error;
+    }
+  }
+
+  // New methods to match interface
+  async findByRole(role: UserRole, page: number = 1, limit: number = 10): Promise<User[]> {
+    try {
+      const skip = (page - 1) * limit;
+      
+      const users = await this.prisma.user.findMany({
+        where: { role },
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return users.map((user: any) => new User({
+        id: user.id,
+        email: user.email,
+        password: user.password,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role as UserRole,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      }));
+    } catch (error) {
+      this.logger.error('Error finding users by role:', error);
+      throw error;
+    }
+  }
+
+  async searchUsers(query: string, page: number = 1, limit: number = 10): Promise<User[]> {
+    try {
+      const skip = (page - 1) * limit;
+      
+      const users = await this.prisma.user.findMany({
+        where: {
+          OR: [
+            { firstName: { contains: query, mode: 'insensitive' } },
+            { lastName: { contains: query, mode: 'insensitive' } },
+            { email: { contains: query, mode: 'insensitive' } },
+          ],
+        },
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return users.map((user: any) => new User({
+        id: user.id,
+        email: user.email,
+        password: user.password,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role as UserRole,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      }));
+    } catch (error) {
+      this.logger.error('Error searching users:', error);
+      throw error;
+    }
+  }
+
+  async findActiveUsers(page: number = 1, limit: number = 10): Promise<User[]> {
+    try {
+      const skip = (page - 1) * limit;
+      
+      const users = await this.prisma.user.findMany({
+        where: { isActive: true },
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return users.map((user: any) => new User({
+        id: user.id,
+        email: user.email,
+        password: user.password,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role as UserRole,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      }));
+    } catch (error) {
+      this.logger.error('Error finding active users:', error);
       throw error;
     }
   }

@@ -139,14 +139,15 @@ export class Container {
     // Get service factory
     const factory = this.services.get(name);
     if (!factory) {
+      this.logger.error(`Service '${name}' not found in container. Available services: ${Array.from(this.services.keys()).join(', ')}`);
       throw new Error(`Service '${name}' not found in container`);
     }
 
     // Create instance
     const instance = factory();
 
-    // Store singleton instances
-    if (!name.includes('Controller')) { // Controllers are transient
+    // Store singleton instances (not controllers as they are transient)
+    if (!name.includes('Controller')) {
       this.instances.set(name, instance);
     }
 
